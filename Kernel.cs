@@ -30,17 +30,6 @@ namespace UnnamedOS
             else if (PanicService.panic) { Console.ReadLine(); Sys.Power.Shutdown(); }
 
             _console.Update();
-
-            //Console.Write("Input: ");
-            //var input = Console.ReadLine();
-            //if (input == "") { Sys.Power.Shutdown(); }
-            //else if (input == "panic") { PanicService.ThrowPanic("test", "this is a test panic", "", true); }
-            //else
-            //{
-            //    Console.Write("Text typed: ");
-            //    Console.WriteLine(input);
-            //}
-
         }
     }
 }
