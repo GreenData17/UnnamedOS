@@ -199,11 +199,11 @@ namespace UnnamedOS.TempApps
         private void cmd_exe(string input)
         {
             string[] command = input.Split(' ');
-            List<byte> code = new List<byte>();
+            List<string> code = new List<string>();
 
             for (int i = 1; i < command.Length; i++)
             {
-                code.Add((byte)int.Parse(command[i]));
+                code.Add(command[i].ToUpper());
             }
 
             OpCodeinterpreter.ExecuteCode(code.ToArray());
