@@ -14,14 +14,14 @@ namespace UnnamedOS
 
         private FileSystemService _fileSystem;
 
-        private TempConsole _console;
+        private TempTextConsole _console;
 
         protected override void BeforeRun()
         {
             Console.WriteLine("Cosmos booted successfully. Type a line of text to get it echoed back.");
             _panic = new PanicService();
             _fileSystem = new FileSystemService();
-            _console = new TempConsole();
+            _console = new TempTextConsole();
         }
 
         protected override void Run()

@@ -134,9 +134,7 @@ namespace UnnamedOS.TempApps
 
         private void GetInput()
         {
-            KeyEvent keyEvent;
-
-            if (!KeyboardManager.TryReadKey(out keyEvent)) return;
+            if (!KeyboardManager.TryReadKey(out var keyEvent)) return;
 
 
             if (keyEvent.Key == ConsoleKeyEx.Backspace)  // remove last character in input
@@ -232,15 +230,23 @@ namespace UnnamedOS.TempApps
         private void cmd_ls()
         {
             string[] folders = FileSystemService.instance.GetDirectories(currentPath, true);
-            string foldersString = "";
+            string outputString = "";
             foreach (var folder in folders)
             {
                 if(folder.Length > 10)
-                    foldersString += $"        {folder.Substring(0,10)}";
+                    outputString += $"        {folder.Substring(0,10)}";
                 else
-                    foldersString += $"        {folder}";
+                    outputString += $"        {folder}";
             }
-            Print(foldersString);
+            string[] files = FileSystemService.instance.GetFiles(currentPath, true);
+            foreach (var file in files)
+            {
+                if (file.Length > 10)
+                    outputString += $"        {file.Substring(0, 10)}";
+                else
+                    outputString += $"        {file}";
+            }
+            Print(outputString);
         }
 
         private void cmd_exe(string input)
