@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Cosmos.System;
 using Microsoft.VisualBasic;
 using Console = System.Console;
+using UnnamedOS.services;
 
 namespace UnnamedOS.TempApps
 {
@@ -171,6 +172,22 @@ namespace UnnamedOS.TempApps
                 Console.Write("TEST");
                 PrintToConsole("TEST");
             }
+        }
+
+        // Temp copy, for later redo
+        private void cmd_exe(string input)
+        {
+            string[] command = input.Split(' ');
+            List<byte> code = new List<byte>();
+
+            for (int i = 1; i < command.Length; i++)
+            {
+                code.Add((byte)int.Parse(command[i]));
+            }
+
+            OpCodeinterpreter.ExecuteCode(code.ToArray());
+            code.Clear();
+            code = null;
         }
 
         private void ScrollOutput()
