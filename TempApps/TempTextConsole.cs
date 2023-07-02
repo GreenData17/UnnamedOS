@@ -13,6 +13,8 @@ namespace UnnamedOS.TempApps
 {
     public class TempTextConsole
     {
+        private static TempTextConsole instance;
+
         private const int WIDTH = 80;
         private const int HEIGHT = 24;
 
@@ -27,6 +29,8 @@ namespace UnnamedOS.TempApps
 
         public TempTextConsole()
         {
+            instance = this;
+
             Encoding.RegisterProvider(CosmosEncodingProvider.Instance);
             Console.InputEncoding = Encoding.GetEncoding(437);
             Console.OutputEncoding = Encoding.GetEncoding(437);
@@ -43,6 +47,17 @@ namespace UnnamedOS.TempApps
         {
             HandleInput();
         }
+
+        public static void WriteToConsole(string text)
+        {
+            instance.PrintToConsole(text);
+        }
+
+
+
+
+
+
 
         private void HandleInput()
         {
@@ -67,6 +82,9 @@ namespace UnnamedOS.TempApps
 
         private void PrintToConsole(string text, bool hasPrefix = false)
         {
+            SetCursorPosition(0, _cursorY, true);
+
+            Console.Write(hasPrefix ? GetPrefixString() : "" + text);
             AddOutput(text, hasPrefix);
             _cursorY++;
             _cursorX = 0;
@@ -169,8 +187,11 @@ namespace UnnamedOS.TempApps
                 Power.Shutdown();
             else if (_input == "test")
             {
-                Console.Write("TEST");
                 PrintToConsole("TEST");
+            }
+            else if (_input.StartsWith("exe"))
+            {
+                cmd_exe(_input);
             }
         }
 
