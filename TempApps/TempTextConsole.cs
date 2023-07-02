@@ -114,6 +114,7 @@ namespace UnnamedOS.TempApps
         private void DeletePressed()
         {
             if (_cursorX == _input.Length) return;
+            if (_cursorX == _input.Length - 1) Console.CursorSize = 20;
 
             string inputAfterCursor = _input.Substring(_cursorX + 1);
             _input = _input.Substring(0, _cursorX) + inputAfterCursor;
