@@ -64,25 +64,24 @@ namespace UnnamedOS.TempApps
                 WriteInput(keyEvent);
         }
 
+        private void PrintToConsole(string text, bool hasPrefix = false)
+        {
+            AddOutput(text, hasPrefix);
+            _cursorY++;
+            _cursorX = 0;
+            SetCursorPosition(_cursorX, _cursorY, true);
+        }
+
         #region inputAction
 
         private void EnterPressed(KeyEvent keyEvent)
         {
-            if (_input == "shutdown") 
-                Power.Shutdown();
-            
-            else
-            {
-                AddOutput(_input, true);
-                _cursorY++;
-                _cursorX = 0;
-                SetCursorPosition(_cursorX, _cursorY, true);
+            PrintToConsole(_input, true);
 
-                HandleCommands();
+            HandleCommands();
 
-                _input = "";
-                PrintPrefix();
-            }
+            _input = "";
+            PrintPrefix();
         }
 
         private void MoveCursor(KeyEvent keyEvent)
@@ -164,12 +163,12 @@ namespace UnnamedOS.TempApps
 
         private void HandleCommands()
         {
-            if (_input == "test")
+            if (_input == "shutdown")
+                Power.Shutdown();
+            else if (_input == "test")
             {
-                AddOutput("test");
-                _cursorY += 1;
-                Console.Write("test");
-                SetCursorPosition(_cursorX, _cursorY, true);
+                Console.Write("TEST");
+                PrintToConsole("TEST");
             }
         }
 
