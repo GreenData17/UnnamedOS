@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using UnnamedOS.services.Utils;
 using UnnamedOS.TempApps;
 
 namespace UnnamedOS.services
@@ -80,22 +81,16 @@ namespace UnnamedOS.services
 
             while (isReading)
             {
-                if (code[pointer + offset] == "03")
+                string character = Converter.HexToAscii(code[pointer + offset]);
+
+                if (character == "ETX")
                 {
                     isReading = false;
                     break;
                 }
-                else if (code[pointer + offset] == "48")
+                else
                 {
-                    output += "H";
-                }
-                else if (code[pointer + offset] == "69")
-                {
-                    output += "i";
-                }
-                else if (code[pointer + offset] == "7E")
-                {
-                    output += "~";
+                    output += character;
                 }
 
                 offset += 1;
