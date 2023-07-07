@@ -8,480 +8,480 @@ namespace UnnamedOS.services.Utils
 {
     public class Converter
     {
-        public static string HexToAscii(string hex)
+        public static string HexToAscii(byte hex)
         {
             switch (hex)
             {
                 // control character
 
-                case "00":
+                case 0x00:
                     return "NUL";
-                case "03":
+                case 0x03:
                     return "ETX"; // end of text
-                case "07":
+                case 0x07:
                     return "BEL"; // BEEP sound
-                case "08":
+                case 0x08:
                     return "BS";  // Backspace
-                case "09":
+                case 0x09:
                     return "HT";  // Horizontal Tab
-                case "1B":
+                case 0x1B:
                     return "ESC"; // Escape
-                case "1C":
+                case 0x1C:
                     return "FS";  // File separator
 
                 // basic characters
 
-                case "20":
+                case 0x20:
                     return " ";
-                case "21":
+                case 0x21:
                     return "!";
-                case "22":
+                case 0x22:
                     return "\"";
-                case "23":
+                case 0x23:
                     return "#";
-                case "24":
+                case 0x24:
                     return "$";
-                case "25":
+                case 0x25:
                     return "%";
-                case "26":
+                case 0x26:
                     return "&";
-                case "27":
+                case 0x27:
                     return "'";
-                case "28":
+                case 0x28:
                     return "(";
-                case "29":
+                case 0x29:
                     return ")";
-                case "2A":
+                case 0x2A:
                     return "*";
-                case "2B":
+                case 0x2B:
                     return "+";
-                case "2C":
+                case 0x2C:
                     return ",";
-                case "2D":
+                case 0x2D:
                     return "-";
-                case "2E":
+                case 0x2E:
                     return ".";
-                case "2F":
+                case 0x2F:
                     return "/";
-                case "30":
+                case 0x30:
                     return "0";
-                case "31":
+                case 0x31:
                     return "1";
-                case "32":
+                case 0x32:
                     return "2";
-                case "33":
+                case 0x33:
                     return "3";
-                case "34":
+                case 0x34:
                     return "4";
-                case "35":
+                case 0x35:
                     return "5";
-                case "36":
+                case 0x36:
                     return "6";
-                case "37":
+                case 0x37:
                     return "7";
-                case "38":
+                case 0x38:
                     return "8";
-                case "39":
+                case 0x39:
                     return "9";
-                case "3A":
+                case 0x3A:
                     return ":";
-                case "3B":
+                case 0x3B:
                     return ";";
-                case "3C":
+                case 0x3C:
                     return "<";
-                case "3D":
+                case 0x3D:
                     return "=";
-                case "3E":
+                case 0x3E:
                     return ">";
-                case "3F":
+                case 0x3F:
                     return "?";
-                case "40":
+                case 0x40:
                     return "@";
-                case "41":
+                case 0x41:
                     return "A";
-                case "42":
+                case 0x42:
                     return "B";
-                case "43":
+                case 0x43:
                     return "C";
-                case "44":
+                case 0x44:
                     return "D";
-                case "45":
+                case 0x45:
                     return "E";
-                case "46":
+                case 0x46:
                     return "F";
-                case "47":
+                case 0x47:
                     return "G";
-                case "48":
+                case 0x48:
                     return "H";
-                case "49":
+                case 0x49:
                     return "I";
-                case "4A":
+                case 0x4A:
                     return "J";
-                case "4B":
+                case 0x4B:
                     return "K";
-                case "4C":
+                case 0x4C:
                     return "L";
-                case "4D":
+                case 0x4D:
                     return "M";
-                case "4E":
+                case 0x4E:
                     return "N";
-                case "4F":
+                case 0x4F:
                     return "O";
-                case "50":
+                case 0x50:
                     return "P";
-                case "51":
+                case 0x51:
                     return "Q";
-                case "52":
+                case 0x52:
                     return "R";
-                case "53":
+                case 0x53:
                     return "S";
-                case "54":
+                case 0x54:
                     return "T";
-                case "55":
+                case 0x55:
                     return "U";
-                case "56":
+                case 0x56:
                     return "V";
-                case "57":
+                case 0x57:
                     return "W";
-                case "58":
+                case 0x58:
                     return "X";
-                case "59":
+                case 0x59:
                     return "Y";
-                case "5A":
+                case 0x5A:
                     return "Z";
-                case "5B":
+                case 0x5B:
                     return "[";
-                case "5C":
+                case 0x5C:
                     return "\\";
-                case "5D":
+                case 0x5D:
                     return "]";
-                case "5E":
+                case 0x5E:
                     return "^";
-                case "5F":
+                case 0x5F:
                     return "_";
-                case "60":
+                case 0x60:
                     return "`";
-                case "61":
+                case 0x61:
                     return "a";
-                case "62":
+                case 0x62:
                     return "b";
-                case "63":
+                case 0x63:
                     return "c";
-                case "64":
+                case 0x64:
                     return "d";
-                case "65":
+                case 0x65:
                     return "e";
-                case "66":
+                case 0x66:
                     return "f";
-                case "67":
+                case 0x67:
                     return "g";
-                case "68":
+                case 0x68:
                     return "h";
-                case "69":
+                case 0x69:
                     return "i";
-                case "6A":
+                case 0x6A:
                     return "j";
-                case "6B":
+                case 0x6B:
                     return "k";
-                case "6C":
+                case 0x6C:
                     return "l";
-                case "6D":
+                case 0x6D:
                     return "m";
-                case "6E":
+                case 0x6E:
                     return "n";
-                case "6F":
+                case 0x6F:
                     return "o";
-                case "70":
+                case 0x70:
                     return "p";
-                case "71":
+                case 0x71:
                     return "q";
-                case "72":
+                case 0x72:
                     return "r";
-                case "73":
+                case 0x73:
                     return "s";
-                case "74":
+                case 0x74:
                     return "t";
-                case "75":
+                case 0x75:
                     return "u";
-                case "76":
+                case 0x76:
                     return "v";
-                case "77":
+                case 0x77:
                     return "w";
-                case "78":
+                case 0x78:
                     return "x";
-                case "79":
+                case 0x79:
                     return "y";
-                case "7A":
+                case 0x7A:
                     return "z";
-                case "7B":
+                case 0x7B:
                     return "{";
-                case "7C":
+                case 0x7C:
                     return "|";
-                case "7D":
+                case 0x7D:
                     return "}";
-                case "7E":
+                case 0x7E:
                     return "~";
-                case "7F":
+                case 0x7F:
                     return "DEL";
 
                 // Extended ASCII
                 // Only CP437 supported
 
-                case "80":
+                case 0x80:
                     return "Ç";
-                case "81":
+                case 0x81:
                     return "ü";
-                case "82":
+                case 0x82:
                     return "é";
-                case "83":
+                case 0x83:
                     return "â";
-                case "84":
+                case 0x84:
                     return "ä";
-                case "85":
+                case 0x85:
                     return "à";
-                case "86":
+                case 0x86:
                     return "å";
-                case "87":
+                case 0x87:
                     return "ç";
-                case "88":
+                case 0x88:
                     return "ê";
-                case "89":
+                case 0x89:
                     return "ë";
-                case "8A":
+                case 0x8A:
                     return "è";
-                case "8B":
+                case 0x8B:
                     return "ï";
-                case "8C":
+                case 0x8C:
                     return "î";
-                case "8D":
+                case 0x8D:
                     return "ì";
-                case "8E":
+                case 0x8E:
                     return "Ä";
-                case "8F":
+                case 0x8F:
                     return "Å";
-                case "90":
+                case 0x90:
                     return "É";
-                case "91":
+                case 0x91:
                     return "æ";
-                case "92":
+                case 0x92:
                     return "Æ";
-                case "93":
+                case 0x93:
                     return "ô";
-                case "94":
+                case 0x94:
                     return "ö";
-                case "95":
+                case 0x95:
                     return "ò";
-                case "96":
+                case 0x96:
                     return "û";
-                case "97":
+                case 0x97:
                     return "ù";
-                case "98":
+                case 0x98:
                     return "ÿ";
-                case "99":
+                case 0x99:
                     return "Ö";
-                case "9A":
+                case 0x9A:
                     return "Ü";
-                case "9B":
+                case 0x9B:
                     return "¢";
-                case "9C":
+                case 0x9C:
                     return "£";
-                case "9D":
+                case 0x9D:
                     return "¥";
-                case "9E":
+                case 0x9E:
                     return "₧";
-                case "9F":
+                case 0x9F:
                     return "ƒ";
-                case "A0":
+                case 0xA0:
                     return "á";
-                case "A1":
+                case 0xA1:
                     return "í";
-                case "A2":
+                case 0xA2:
                     return "ó";
-                case "A3":
+                case 0xA3:
                     return "ú";
-                case "A4":
+                case 0xA4:
                     return "ñ";
-                case "A5":
+                case 0xA5:
                     return "Ñ";
-                case "A6":
+                case 0xA6:
                     return "ª";
-                case "A7":
+                case 0xA7:
                     return "º";
-                case "A8":
+                case 0xA8:
                     return "¿";
-                case "A9":
+                case 0xA9:
                     return "⌐";
-                case "AA":
+                case 0xAA:
                     return "¬";
-                case "AB":
+                case 0xAB:
                     return "½";
-                case "AC":
+                case 0xAC:
                     return "¼";
-                case "AD":
+                case 0xAD:
                     return "¡";
-                case "AE":
+                case 0xAE:
                     return "«";
-                case "AF":
+                case 0xAF:
                     return "»";
-                case "B0":
+                case 0xB0:
                     return "░";
-                case "B1":
+                case 0xB1:
                     return "▒";
-                case "B2":
+                case 0xB2:
                     return "▓";
-                case "B3":
+                case 0xB3:
                     return "│";
-                case "B4":
+                case 0xB4:
                     return "┤";
-                case "B5":
+                case 0xB5:
                     return "╡";
-                case "B6":
+                case 0xB6:
                     return "╢";
-                case "B7":
+                case 0xB7:
                     return "╖";
-                case "B8":
+                case 0xB8:
                     return "╕";
-                case "B9":
+                case 0xB9:
                     return "╣";
-                case "BA":
+                case 0xBA:
                     return "║";
-                case "BB":
+                case 0xBB:
                     return "╗";
-                case "BC":
+                case 0xBC:
                     return "╝";
-                case "BD":
+                case 0xBD:
                     return "╜";
-                case "BE":
+                case 0xBE:
                     return "╛";
-                case "BF":
+                case 0xBF:
                     return "┐";
-                case "C0":
+                case 0xC0:
                     return "└";
-                case "C1":
+                case 0xC1:
                     return "┴";
-                case "C2":
+                case 0xC2:
                     return "┬";
-                case "C3":
+                case 0xC3:
                     return "├";
-                case "C4":
+                case 0xC4:
                     return "─";
-                case "C5":
+                case 0xC5:
                     return "┼";
-                case "C6":
+                case 0xC6:
                     return "╞";
-                case "C7":
+                case 0xC7:
                     return "╟";
-                case "C8":
+                case 0xC8:
                     return "╚";
-                case "C9":
+                case 0xC9:
                     return "╔";
-                case "CA":
+                case 0xCA:
                     return "╩";
-                case "CB":
+                case 0xCB:
                     return "╦";
-                case "CC":
+                case 0xCC:
                     return "╠";
-                case "CD":
+                case 0xCD:
                     return "═";
-                case "CE":
+                case 0xCE:
                     return "╬";
-                case "CF":
+                case 0xCF:
                     return "╧";
-                case "D0":
+                case 0xD0:
                     return "╨";
-                case "D1":
+                case 0xD1:
                     return "╤";
-                case "D2":
+                case 0xD2:
                     return "╥";
-                case "D3":
+                case 0xD3:
                     return "╙";
-                case "D4":
+                case 0xD4:
                     return "╘";
-                case "D5":
+                case 0xD5:
                     return "╒";
-                case "D6":
+                case 0xD6:
                     return "╓";
-                case "D7":
+                case 0xD7:
                     return "╫";
-                case "D8":
+                case 0xD8:
                     return "╪";
-                case "D9":
+                case 0xD9:
                     return "┘";
-                case "DA":
+                case 0xDA:
                     return "┌";
-                case "DB":
+                case 0xDB:
                     return "█";
-                case "DC":
+                case 0xDC:
                     return "▄";
-                case "DD":
+                case 0xDD:
                     return "▌";
-                case "DE":
+                case 0xDE:
                     return "▐";
-                case "DF":
+                case 0xDF:
                     return "▀";
-                case "E0":
+                case 0xE0:
                     return "α";
-                case "E1":
+                case 0xE1:
                     return "ß";
-                case "E2":
+                case 0xE2:
                     return "Γ";
-                case "E3":
+                case 0xE3:
                     return "π";
-                case "E4":
+                case 0xE4:
                     return "Σ";
-                case "E5":
+                case 0xE5:
                     return "σ";
-                case "E6":
+                case 0xE6:
                     return "µ";
-                case "E7":
+                case 0xE7:
                     return "τ";
-                case "E8":
+                case 0xE8:
                     return "Φ";
-                case "E9":
+                case 0xE9:
                     return "Θ";
-                case "EA":
+                case 0xEA:
                     return "Ω";
-                case "EB":
+                case 0xEB:
                     return "δ";
-                case "EC":
+                case 0xEC:
                     return "∞";
-                case "ED":
+                case 0xED:
                     return "φ";
-                case "EE":
+                case 0xEE:
                     return "ε";
-                case "EF":
+                case 0xEF:
                     return "∩";
-                case "F0":
+                case 0xF0:
                     return "≡";
-                case "F1":
+                case 0xF1:
                     return "±";
-                case "F2":
+                case 0xF2:
                     return "≥";
-                case "F3":
+                case 0xF3:
                     return "≤";
-                case "F4":
+                case 0xF4:
                     return "⌠";
-                case "F5":
+                case 0xF5:
                     return "⌡";
-                case "F6":
+                case 0xF6:
                     return "÷";
-                case "F7":
+                case 0xF7:
                     return "≈";
-                case "F8":
+                case 0xF8:
                     return "°";
-                case "F9":
+                case 0xF9:
                     return "∙";
-                case "FA":
+                case 0xFA:
                     return "·";
-                case "FB":
+                case 0xFB:
                     return "√";
-                case "FC":
+                case 0xFC:
                     return "ⁿ";
-                case "FD":
+                case 0xFD:
                     return "²";
-                case "FE":
+                case 0xFE:
                     return "■";
-                case "FF":
+                case 0xFF:
                     return "";
 
 
@@ -489,6 +489,44 @@ namespace UnnamedOS.services.Utils
                 default:
                     return "?";
             }
+        }
+
+        public static string ByteToHex(byte b) => b.ToString("X");
+
+        public static byte HexToByte(string hex)
+        {
+            int index = hex.Length - 1;
+            int result = 0;
+
+            foreach (var c in hex)
+            {
+                if (c == 'A') result += ToPower(10, index);
+                else if (c == 'B') result += ToPower(11, index);
+                else if (c == 'C') result += ToPower(12, index);
+                else if (c == 'D') result += ToPower(13, index);
+                else if (c == 'E') result += ToPower(14, index);
+                else if (c == 'F') result += ToPower(15, index);
+                else if (c == '0') { index -= 1; continue; }
+                else result += ToPower(int.Parse(c.ToString()), index);
+
+                index -= 1;
+            }
+
+            return (byte)result;
+        }
+
+        private static int ToPower(int number, int power)
+        {
+            int result = 0;
+
+            if (power == 0) { return number;}
+
+            for (int i = 0; i < power; i++)
+            {
+                result += 16;
+            }
+
+            return result * number;
         }
     }
 }

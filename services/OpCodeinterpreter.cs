@@ -10,7 +10,7 @@ namespace UnnamedOS.services
 {
     public class OpCodeinterpreter
     {
-        public static void ExecuteCode(string[] code)
+        public static void ExecuteCode(byte[] code)
         {
             bool debugMode = false;
 
@@ -19,8 +19,8 @@ namespace UnnamedOS.services
                 for (int i = 0; i < code.Length; i += 2)
                 {
                     string responds = "";
-                    if (code[i] == "00") responds = ExecuteSystemCall(code, i + 1);
-                    else if (code[i] == "04") responds = ExecuteTextModeCall(code, i + 1);
+                    if (code[i] == 0x00) responds = ExecuteSystemCall(code, i + 1);
+                    else if (code[i] == 0x04) responds = ExecuteTextModeCall(code, i + 1);
 
 
 
@@ -50,13 +50,13 @@ namespace UnnamedOS.services
 
         // SYSTEM CALLS //
 
-        private static string ExecuteSystemCall(string[] code, int pointer)
+        private static string ExecuteSystemCall(byte[] code, int pointer)
         {
-            string method = code[pointer];
+            byte method = code[pointer];
 
-            if (method == "00") return "EOF";  // indicates the end of the code
-            else if (method == "01") return "+2";  // next byte group
-            else if (method == "02") return "DEBUG";  // activates Debug mode
+            if (method == 0x00) return "EOF";  // indicates the end of the code
+            else if (method == 0x01) return "+2";  // next byte group
+            else if (method == 0x02) return "DEBUG";  // activates Debug mode
 
 
             return "";
@@ -64,16 +64,16 @@ namespace UnnamedOS.services
 
         // TEXT MODE CALLS //
 
-        private static string ExecuteTextModeCall(string[] code, int pointer)
+        private static string ExecuteTextModeCall(byte[] code, int pointer)
         {
-            string method = code[pointer];
+            byte method = code[pointer];
 
-            if (method == "00") return ConsoleWriteLine(code, pointer);
+            if (method == 0x00) return ConsoleWriteLine(code, pointer);
 
             return "";
         }
 
-        private static string ConsoleWriteLine(string[] code, int pointer)
+        private static string ConsoleWriteLine(byte[] code, int pointer)
         {
             int offset = 1;
             string output = "";

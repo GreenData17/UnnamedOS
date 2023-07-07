@@ -8,6 +8,7 @@ using Cosmos.System;
 using Microsoft.VisualBasic;
 using Console = System.Console;
 using UnnamedOS.services;
+using UnnamedOS.services.Utils;
 
 namespace UnnamedOS.TempApps
 {
@@ -192,18 +193,34 @@ namespace UnnamedOS.TempApps
             else if (_input.StartsWith("exe"))
             {
                 cmd_exe(_input);
+            }else if (_input == "hex")
+            {
+                byteToNumber();
             }
+        }
+
+        private void byteToNumber()
+        {
+            byte b = 0xff;
+            PrintToConsole(b.ToString());
+            int n = b;
+            PrintToConsole(n.ToString());
+            PrintToConsole(b.ToString("X"));
+            PrintToConsole((n == 0xf0).ToString());
+            PrintToConsole((n == 0xff).ToString());
+            PrintToConsole(Converter.HexToByte("FF").ToString());
+            PrintToConsole(Converter.HexToByte("FF").ToString("X"));
         }
 
         // Temp copy, for later redo
         private void cmd_exe(string input)
         {
             string[] command = input.Split(' ');
-            List<string> code = new List<string>();
+            List<byte> code = new List<byte>();
 
             for (int i = 1; i < command.Length; i++)
             {
-                code.Add(command[i].ToUpper());
+                code.Add(Converter.HexToByte(command[i].ToUpper()));
             }
 
             OpCodeinterpreter.ExecuteCode(code.ToArray());
