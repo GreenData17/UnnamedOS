@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using UnnamedOS.TempApps;
 
@@ -46,6 +47,8 @@ namespace UnnamedOS.services
             }
         }
 
+        // SYSTEM CALLS //
+
         private static string ExecuteSystemCall(string[] code, int pointer)
         {
             string method = code[pointer];
@@ -58,44 +61,48 @@ namespace UnnamedOS.services
             return "";
         }
 
+        // TEXT MODE CALLS //
+
         private static string ExecuteTextModeCall(string[] code, int pointer)
         {
             string method = code[pointer];
 
-            if (method == "00")
-            {
-                int offset = 1;
-                string output = "";
-                bool isReading = true;
-
-                while (isReading)
-                {
-                    if (code[pointer + offset] == "03")
-                    {
-                        isReading = false;
-                        break;
-                    }
-                    else if (code[pointer + offset] == "48")
-                    {
-                        output += "H";
-                    }
-                    else if (code[pointer + offset] == "69")
-                    {
-                        output += "i";
-                    }
-                    else if (code[pointer + offset] == "7E")
-                    {
-                        output += "~";
-                    }
-
-                    offset += 1;
-                }
-
-                TempTextConsole.WriteToConsole(output);
-                return "+" + (offset);
-            }
+            if (method == "00") return ConsoleWriteLine(code, pointer);
 
             return "";
+        }
+
+        private static string ConsoleWriteLine(string[] code, int pointer)
+        {
+            int offset = 1;
+            string output = "";
+            bool isReading = true;
+
+            while (isReading)
+            {
+                if (code[pointer + offset] == "03")
+                {
+                    isReading = false;
+                    break;
+                }
+                else if (code[pointer + offset] == "48")
+                {
+                    output += "H";
+                }
+                else if (code[pointer + offset] == "69")
+                {
+                    output += "i";
+                }
+                else if (code[pointer + offset] == "7E")
+                {
+                    output += "~";
+                }
+
+                offset += 1;
+            }
+
+            TempTextConsole.WriteToConsole(output);
+            return "+" + (offset);
         }
     }
 }
