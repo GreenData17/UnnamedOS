@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Cosmos.System;
 using Microsoft.VisualBasic;
+using UnnamedOS.Core;
 using Console = System.Console;
 using UnnamedOS.services;
 using UnnamedOS.services.Utils;
@@ -201,15 +202,7 @@ namespace UnnamedOS.TempApps
 
         private void byteToNumber()
         {
-            byte b = 0xff;
-            PrintToConsole(b.ToString());
-            int n = b;
-            PrintToConsole(n.ToString());
-            PrintToConsole(b.ToString("X"));
-            PrintToConsole((n == 0xf0).ToString());
-            PrintToConsole((n == 0xff).ToString());
-            PrintToConsole(Converter.HexToByte("FF").ToString());
-            PrintToConsole(Converter.HexToByte("FF").ToString("X"));
+            PrintToConsole(Converter.HexToDecimal("FFFFFF"));
         }
 
         // Temp copy, for later redo
@@ -223,7 +216,9 @@ namespace UnnamedOS.TempApps
                 code.Add(Converter.HexToByte(command[i].ToUpper()));
             }
 
-            OpCodeinterpreter.ExecuteCode(code.ToArray());
+            Process process = new Process(code.ToArray(), new byte[] { 0x00 });
+            process.DumpMemory(10);
+            process.Start();
             code.Clear();
             code = null;
         }

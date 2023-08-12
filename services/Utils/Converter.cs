@@ -225,7 +225,7 @@ namespace UnnamedOS.services.Utils
                     return "DEL";
 
                 // Extended ASCII
-                // Only CP437 supported
+                // Only CP437 supported (its a ascii character table name)
 
                 case 0x80:
                     return "Ç";
@@ -491,7 +491,18 @@ namespace UnnamedOS.services.Utils
             }
         }
 
-        public static string ByteToHex(byte b) => b.ToString("X");
+        public static string ByteToHex(byte b) => b.ToString("X2");
+
+        public static string[] ByteArrayToHexArray(byte[] b)
+        {
+            List<string> s = new List<string>();
+            foreach (var b1 in b)
+            {
+                s.Add(ByteToHex(b1));
+            }
+
+            return s.ToArray();
+        }
 
         public static byte HexToByte(string hex)
         {
@@ -515,18 +526,78 @@ namespace UnnamedOS.services.Utils
             return (byte)result;
         }
 
-        private static int ToPower(int number, int power)
+        public static string HexToDecimal(string hex)
         {
+            int index = hex.Length - 1;
             int result = 0;
 
-            if (power == 0) { return number;}
+            foreach (var c in hex)
+            {
+
+                if (c == 'A') result += ToPower(10, index);
+                else if (c == 'B') result += ToPower(11, index);
+                else if (c == 'C') result += ToPower(12, index);
+                else if (c == 'D') result += ToPower(13, index);
+                else if (c == 'E') result += ToPower(14, index);
+                else if (c == 'F') result += ToPower(15, index);
+                else if (c == '0') { index -= 1; continue; }
+                else result += ToPower(int.Parse(c.ToString()), index);
+
+                index -= 1;
+            }
+
+            return result.ToString();
+        }
+
+        private static int ToPower(int number, int power)
+        {
+            int result = 1;
+
+            if (power == 0) { return 15;}
 
             for (int i = 0; i < power; i++)
             {
-                result += 16;
+                result *= 16;
             }
 
             return result * number;
+        }
+
+        public static string HexToUnsignedDecimal(string hex)
+        {
+            int index = hex.Length - 1;
+            uint result = 0;
+
+            foreach (var c in hex)
+            {
+
+                if (c == 'A') result += UnsignedToPower(10, index);
+                else if (c == 'B') result += UnsignedToPower(11, index);
+                else if (c == 'C') result += UnsignedToPower(12, index);
+                else if (c == 'D') result += UnsignedToPower(13, index);
+                else if (c == 'E') result += UnsignedToPower(14, index);
+                else if (c == 'F') result += UnsignedToPower(15, index);
+                else if (c == '0') { index -= 1; continue; }
+                else result += UnsignedToPower(int.Parse(c.ToString()), index);
+
+                index -= 1;
+            }
+
+            return result.ToString();
+        }
+
+        private static uint UnsignedToPower(int number, int power)
+        {
+            uint result = 1;
+
+            if (power == 0) { return 15; }
+
+            for (int i = 0; i < power; i++)
+            {
+                result *= 16;
+            }
+
+            return (uint)(result * number);
         }
     }
 }

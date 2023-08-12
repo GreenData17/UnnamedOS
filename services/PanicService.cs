@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UnnamedOS.services.TextMode;
 
 namespace UnnamedOS.services
 {
@@ -41,57 +40,40 @@ namespace UnnamedOS.services
         public void Panic(string process, string message, string hint = "", bool isPreview = false)
         {
             panic = true;
-            int theme = 0;
-
-            if (isPreview)
-                theme = 2;
-            
-            SetColorTheme(theme);
-
+            SetPreviewTheme(isPreview);
             Console.Clear();
 
-            SetColorTheme(theme + 1);
+            Console.WriteLine("The kernel is panicking");
+            Console.WriteLine($"\"{message}\"");
+            Console.WriteLine();
+            Console.WriteLine($"process: {process}");
 
-            TextDrawService.DrawTitle("PANIC");
-            SetColorTheme(theme);
-            TextDrawService.NewLine();
-            TextDrawService.NewLine();
-            TextDrawService.NewLine();
-            TextDrawService.NewLine();
-            TextDrawService.NewLine();
-            TextDrawService.DrawText(message);
-            TextDrawService.NewLine();
-            TextDrawService.NewLine();
-            TextDrawService.DrawText($"process: {process}");
-            TextDrawService.NewLine();
-            TextDrawService.DrawText($"{hint}");
-            TextDrawService.NewLine();
-            TextDrawService.NewLine();
-            TextDrawService.NewLine();
-            TextDrawService.DrawText("Press any key to reboot... [internal] replace shutdown in kernel.cs");
+            if (hint != "")
+            {
+                Console.WriteLine($"\"{hint}\"");
+            }
+            
+            Console.WriteLine();
+            Console.WriteLine("Press any key to reboot...");
 
             Console.CursorVisible = false;
+
+            Console.ReadKey();
+
+            Cosmos.System.Power.Reboot();
         }
 
-        private void SetColorTheme(int theme)
+        private void SetPreviewTheme(bool isPreview)
         {
-            if (theme == 0)
-            {
-                Console.BackgroundColor = ConsoleColor.Blue;
-                Console.ForegroundColor = ConsoleColor.White;
-            }else if (theme == 1)
-            {
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor = ConsoleColor.Blue;
-            }else if (theme == 2)
+            if (isPreview)
             {
                 Console.BackgroundColor = ConsoleColor.Green;
                 Console.ForegroundColor = ConsoleColor.White;
             }
-            else if (theme == 3)
+            else
             {
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor = ConsoleColor.Green;
+                Console.BackgroundColor = ConsoleColor.Blue;
+                Console.ForegroundColor = ConsoleColor.White;
             }
         }
     }

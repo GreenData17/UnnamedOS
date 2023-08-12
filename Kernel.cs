@@ -27,7 +27,6 @@ namespace UnnamedOS
         protected override void Run()
         {
             if(_panic == null ) { Sys.Power.Shutdown(); }
-            else if (PanicService.panic) { Console.ReadLine(); Sys.Power.Shutdown(); }
 
             _console.Update();
         }
