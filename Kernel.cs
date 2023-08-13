@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using UnnamedOS.Core;
 using Sys = Cosmos.System;
 using UnnamedOS.services;
 using UnnamedOS.TempApps;
@@ -16,9 +17,13 @@ namespace UnnamedOS
 
         private TempTextConsole _console;
 
+
+        public static Kernel instance;
+        public List<Process> processes = new List<Process>();
+
         protected override void BeforeRun()
         {
-            Console.WriteLine("Cosmos booted successfully. Type a line of text to get it echoed back.");
+            instance = this;
             _panic = new PanicService();
             _fileSystem = new FileSystemService();
             _console = new TempTextConsole();
@@ -29,6 +34,11 @@ namespace UnnamedOS
             if(_panic == null ) { Sys.Power.Shutdown(); }
 
             _console.Update();
+
+            foreach (Process process in processes)
+            {
+                process.Update();
+            }
         }
     }
 }
