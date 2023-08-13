@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnnamedOS.services;
 using UnnamedOS.services.Utils;
 using UnnamedOS.TempApps;
@@ -11,26 +8,31 @@ namespace UnnamedOS.Core
 {
     public class Process
     {
+        // Process Info
+        private string name = "";
         private bool isValid = false;
-
+        private int exitCode = 0;
+        //private int AccessLevel = 0;  // TODO: make it so that highest process will cause a panic if failed
         private int emptyMemorySpace = 1000;
+
+        // Entrypoints
         private int entryPoint = 0; // starts at 0, 5 is the offset for the file type verification.
         private int loopEntryPoint = 0;
         private int variabelEntryPoint = 6; // indicates where the variable data starts at.
+
+        // Memory
         private List<byte> stack;
         public byte[] memory;
 
-        public Process(byte[] file, byte[] arguments = null)
+        public Process(byte[] code, string processName = "unmanagedProcess", byte[] arguments = null)
         {
-            if (arguments != null && arguments[0] != 0x00)
-            {
-                VerifyIsFile(file);
-            }
+            name = processName;
+            Kernel.instance.processes.Add(this);
 
-            memory = new byte[file.Length + emptyMemorySpace];
-            Array.Copy(file, memory, file.Length);
+            memory = new byte[code.Length + emptyMemorySpace];
+            Array.Copy(code, memory, code.Length);
 
-            variabelEntryPoint = file.Length + 1;
+            variabelEntryPoint = code.Length + 1;
 
             isValid = true;
         }
@@ -38,14 +40,13 @@ namespace UnnamedOS.Core
         public void Start()
         {
             if(!isValid) { TempTextConsole.WriteToConsole("Error - file can not be run"); return; }
+            
 
-            byte[] code = new byte[memory.Length - emptyMemorySpace - entryPoint];
-
-            Array.Copy(memory, entryPoint, code, 0, code.Length);
-
-            if (!ExecuteCode())
+            exitCode = ExecuteCode();
+            if (GetExitCode() != 0)
             {
-                PanicService.ThrowPanic("Unnamed Process", "Process was Illegally closed!");
+                Stop();
+                PanicService.ThrowPanic(GetName(), "Process was Illegally closed!", $"Process exited with code {GetExitCode()}.");
             }
         }
 
@@ -81,26 +82,13 @@ namespace UnnamedOS.Core
             }
         }
 
-
-        // -- internal methods -- //
-
-        private void VerifyIsFile(byte[] file)
-        {
-            if (file == null) TempTextConsole.WriteToConsole("Error - no content");
-
-            if (file[0] != 0x2E) TempTextConsole.WriteToConsole("Error - file corrupted");              // .
-            if (file[1] != 0x4E) TempTextConsole.WriteToConsole("Error - file is not a executable");    // N
-            if (file[2] != 0x4F) TempTextConsole.WriteToConsole("Error - file is not a executable");    // O
-            if (file[3] != 0x45) TempTextConsole.WriteToConsole("Error - file is not a executable");    // E
-            if (file[4] != 0x00) TempTextConsole.WriteToConsole("Error - file corrupted");              // NUL
-
-            entryPoint = 5;
-        }
+        public string GetName() => name;
+        public int GetExitCode() => exitCode;
 
 
         // -- Op Code Interpreter -- //
 
-        public bool ExecuteCode(int entryPointOffset = 0)
+        public int ExecuteCode(int entryPointOffset = 0)
         {
             bool debugMode = false;
 
@@ -111,7 +99,6 @@ namespace UnnamedOS.Core
                     string responds = "";
                     if (memory[i] == 0x00) responds = ExecuteSystemCall(i + 1);
                     else if (memory[i] == 0x04) responds = ExecuteTextModeCall(i + 1);
-
 
 
 
@@ -126,20 +113,26 @@ namespace UnnamedOS.Core
                     else if (responds == "EOF")
                     {
                         if (debugMode)
-                            TempTextConsole.WriteToConsole("-- End Of File --");
-                        return true;
+                            TempTextConsole.WriteToConsole("-- End Of File --");   // TODO: has to be removed
+                        return 0;
+                    }else if (responds.StartsWith("ERROR"))
+                    {
+                        if (debugMode)
+                            TempTextConsole.WriteToConsole("-- Critical Error! --");   // TODO: has to be removed
+
+                        return int.Parse(responds.Remove(0, 6));
                     }
                 }
             }
             catch
             {
                 if (debugMode)
-                    TempTextConsole.WriteToConsole("-- Invalid Code! --");
+                    TempTextConsole.WriteToConsole("-- Invalid Code! --");   // TODO: has to be removed
 
-                return false;
+                return -1;
             }
 
-            return false;
+            return -1;
         }
 
         // SYSTEM CALLS //
@@ -148,12 +141,13 @@ namespace UnnamedOS.Core
         {
             byte method = memory[pointer];
 
-            if (method == 0x00) return "EOF";  // indicates the end of the code
-            if (method == 0x01) return "+2";  // next byte group
-            if (method == 0x02) return "DEBUG";  // activates Debug mode
+            if (method == 0x00) return "ERROR 1"; // Invalid System call
+            if (method == 0x01) return "EOF";  // indicates the end of the code
+            if (method == 0x02) return "+2";  // next byte group
+            if (method == 0x03) return "DEBUG";  // activates Debug mode
 
 
-            return "";
+            return "ERROR 1"; // Invalid System call
         }
 
         // TEXT MODE CALLS //
@@ -164,7 +158,7 @@ namespace UnnamedOS.Core
 
             if (method == 0x00) return ConsoleWriteLine(pointer);
 
-            return "";
+            return "ERROR 2";
         }
 
         private string ConsoleWriteLine( int pointer)
@@ -176,6 +170,8 @@ namespace UnnamedOS.Core
             while (isReading)
             {
                 string character = Converter.HexToAscii(memory[pointer + offset]);
+
+                if(character == "NUL") return "ERROR -2";
 
                 if (character == "ETX")
                 {
