@@ -15,7 +15,8 @@ namespace UnnamedOS.Core
 
         private int emptyMemorySpace = 1000;
         private int entryPoint = 0; // starts at 0, 5 is the offset for the file type verification.
-        private int variabelStartingPoint = 6; // indicates where the variable data starts at.
+        private int loopEntryPoint = 0;
+        private int variabelEntryPoint = 6; // indicates where the variable data starts at.
         private List<byte> stack;
         public byte[] memory;
 
@@ -29,7 +30,7 @@ namespace UnnamedOS.Core
             memory = new byte[file.Length + emptyMemorySpace];
             Array.Copy(file, memory, file.Length);
 
-            variabelStartingPoint = file.Length + 1;
+            variabelEntryPoint = file.Length + 1;
 
             isValid = true;
         }
@@ -42,12 +43,10 @@ namespace UnnamedOS.Core
 
             Array.Copy(memory, entryPoint, code, 0, code.Length);
 
-            if (!ExecuteCode(code))
+            if (!ExecuteCode())
             {
                 PanicService.ThrowPanic("Unnamed Process", "Process was Illegally closed!");
             }
-
-            Stop();
         }
 
         public void Stop()
@@ -56,6 +55,16 @@ namespace UnnamedOS.Core
             emptyMemorySpace = 0;
             entryPoint = 0;
             memory = null;
+        }
+
+        public void Update()
+        {
+            if (loopEntryPoint == 0)
+            {
+                Stop();
+            }
+
+
         }
 
 
@@ -91,17 +100,17 @@ namespace UnnamedOS.Core
 
         // -- Op Code Interpreter -- //
 
-        public static bool ExecuteCode(byte[] code)
+        public bool ExecuteCode(int entryPointOffset = 0)
         {
             bool debugMode = false;
 
             try
             {
-                for (int i = 0; i < code.Length; i += 2)
+                for (int i = entryPointOffset; i < memory.Length; i += 2)
                 {
                     string responds = "";
-                    if (code[i] == 0x00) responds = ExecuteSystemCall(code, i + 1);
-                    else if (code[i] == 0x04) responds = ExecuteTextModeCall(code, i + 1);
+                    if (memory[i] == 0x00) responds = ExecuteSystemCall(i + 1);
+                    else if (memory[i] == 0x04) responds = ExecuteTextModeCall(i + 1);
 
 
 
@@ -135,9 +144,9 @@ namespace UnnamedOS.Core
 
         // SYSTEM CALLS //
 
-        private static string ExecuteSystemCall(byte[] code, int pointer)
+        private string ExecuteSystemCall(int pointer)
         {
-            byte method = code[pointer];
+            byte method = memory[pointer];
 
             if (method == 0x00) return "EOF";  // indicates the end of the code
             if (method == 0x01) return "+2";  // next byte group
@@ -149,16 +158,16 @@ namespace UnnamedOS.Core
 
         // TEXT MODE CALLS //
 
-        private static string ExecuteTextModeCall(byte[] code, int pointer)
+        private string ExecuteTextModeCall(int pointer)
         {
-            byte method = code[pointer];
+            byte method = memory[pointer];
 
-            if (method == 0x00) return ConsoleWriteLine(code, pointer);
+            if (method == 0x00) return ConsoleWriteLine(pointer);
 
             return "";
         }
 
-        private static string ConsoleWriteLine(byte[] code, int pointer)
+        private string ConsoleWriteLine( int pointer)
         {
             int offset = 1;
             string output = "";
@@ -166,7 +175,7 @@ namespace UnnamedOS.Core
 
             while (isReading)
             {
-                string character = Converter.HexToAscii(code[pointer + offset]);
+                string character = Converter.HexToAscii(memory[pointer + offset]);
 
                 if (character == "ETX")
                 {
@@ -174,14 +183,14 @@ namespace UnnamedOS.Core
                     break;
                 }
                 else
-                {
+                { 
                     output += character;
                 }
 
                 offset += 1;
             }
 
-            TempTextConsole.WriteToConsole(output);
+            TempTextConsole.WriteToConsole(output);   // TODO: has to be removed
             return "+" + (offset);
         }
     }
