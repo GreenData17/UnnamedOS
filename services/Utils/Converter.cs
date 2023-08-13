@@ -504,28 +504,6 @@ namespace UnnamedOS.services.Utils
             return s.ToArray();
         }
 
-        public static byte HexToByte(string hex)
-        {
-            int index = hex.Length - 1;
-            int result = 0;
-
-            foreach (var c in hex)
-            {
-                if (c == 'A') result += ToPower(10, index);
-                else if (c == 'B') result += ToPower(11, index);
-                else if (c == 'C') result += ToPower(12, index);
-                else if (c == 'D') result += ToPower(13, index);
-                else if (c == 'E') result += ToPower(14, index);
-                else if (c == 'F') result += ToPower(15, index);
-                else if (c == '0') { index -= 1; continue; }
-                else result += ToPower(int.Parse(c.ToString()), index);
-
-                index -= 1;
-            }
-
-            return (byte)result;
-        }
-
         public static string HexToDecimal(string hex)
         {
             int index = hex.Length - 1;
@@ -549,11 +527,54 @@ namespace UnnamedOS.services.Utils
             return result.ToString();
         }
 
+        public static byte[] StringToByteArrayFastest(string hex)
+        {
+            if (hex.Length % 2 == 1)
+                return Array.Empty<byte>();
+
+            byte[] arr = new byte[hex.Length >> 1];
+
+            for (int i = 0; i < hex.Length >> 1; ++i)
+            {
+                arr[i] = (byte)((GetHexVal(hex[i << 1]) << 4) + (GetHexVal(hex[(i << 1) + 1])));
+            }
+
+            return arr;
+        }
+
+        public static int GetHexVal(char hex)
+        {
+            int val = (int)hex;
+            return val - (val < 58 ? 48 : 55);
+        }
+
+        public static byte HexToByte(string hex)
+        {
+            int index = hex.Length - 1;
+            int result = 0;
+
+            foreach (var c in hex)
+            {
+                if (c == 'A') result += ToPower(10, index);
+                else if (c == 'B') result += ToPower(11, index);
+                else if (c == 'C') result += ToPower(12, index);
+                else if (c == 'D') result += ToPower(13, index);
+                else if (c == 'E') result += ToPower(14, index);
+                else if (c == 'F') result += ToPower(15, index);
+                else if (c == '0') { index -= 1; continue; }
+                else result += ToPower(int.Parse(c.ToString()), index);
+
+                index -= 1;
+            }
+
+            return (byte)result;
+        }
+
         private static int ToPower(int number, int power)
         {
             int result = 1;
 
-            if (power == 0) { return 15;}
+            if (power == 0) { return 1; }
 
             for (int i = 0; i < power; i++)
             {

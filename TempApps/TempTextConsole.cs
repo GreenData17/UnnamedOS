@@ -209,17 +209,16 @@ namespace UnnamedOS.TempApps
         private void cmd_exe(string input)
         {
             string[] command = input.Split(' ');
-            List<byte> code = new List<byte>();
+            byte[] code;
 
-            for (int i = 1; i < command.Length; i++)
-            {
-                code.Add(Converter.HexToByte(command[i].ToUpper()));
+            string hex = "";
+            for (int i = 1; i < command.Length; i++) { 
+                hex += command[i];
             }
+            code = Converter.StringToByteArrayFastest(hex);
 
-            Process process = new Process(code.ToArray(), new byte[] { 0x00 });
-            process.DumpMemory(10);
+            Process process = new Process(code.ToArray(), "Testing Process");
             process.Start();
-            code.Clear();
             code = null;
         }
 
